@@ -7,7 +7,7 @@ import lombok.Data;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class RequestAuthorSave {
     private long id;
-    private String first_name;
-    private String family_name;
-    private String second_name;
+    private String firstName;
+    private String familyName;
+    private String secondName;
 }
