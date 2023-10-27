@@ -14,10 +14,7 @@ import models.BookSaveAuthorExmp.BookSaveAuthorExmp;
 import models.requests.RequestAuthorSave;
 import models.requests.RequestBookSave;
 import models.requests.RequestGetAllBooksXML;
-import models.responsesPositive.ResponseAuthorSave;
-import models.responsesPositive.ResponseBookSave;
-import models.responsesPositive.ResponseGetAllBooks;
-import models.responsesPositive.ResponseGetAllBooksXML;
+import models.responsesPositive.*;
 
 import java.util.List;
 
@@ -25,19 +22,22 @@ import static io.restassured.RestAssured.given;
 
 public class Specification {
     public static RequestSpecification reqSpec() {
-        RestAssured.filters(new RequestLoggingFilter(), new ResponseLoggingFilter());
         return new RequestSpecBuilder()
                 .setBaseUri("http://localhost")
                 .setContentType(ContentType.JSON)
                 .setPort(8080)
+                .addFilter(new RequestLoggingFilter())
+                .addFilter(new ResponseLoggingFilter())
                 .build();
     }
+
     public static RequestSpecification reqSpecXML() {
-        RestAssured.filters(new RequestLoggingFilter(), new ResponseLoggingFilter());
         return new RequestSpecBuilder()
                 .setBaseUri("http://localhost")
                 .setContentType(ContentType.XML)
                 .setPort(8080)
+                .addFilter(new RequestLoggingFilter())
+                .addFilter(new ResponseLoggingFilter())
                 .build();
     }
 
@@ -57,50 +57,47 @@ public class Specification {
 
     public static ResponseAuthorSave reqSpecSaveAuthor(String firstName, String lastName, String middleName) {
         RequestAuthorSave author = new RequestAuthorSave(firstName, lastName, middleName);
-        ResponseAuthorSave checkResp =
-                given().spec(reqSpec())
-                        .body(author)
-                        .when()
-                        .post(EndPoints.saveNewAuthorURL)
-                        .then().spec(respSpecSave())
-                        .extract().as(ResponseAuthorSave.class);
-        return checkResp;
+
+        return given().spec(reqSpec())
+                .body(author)
+                .when()
+                .post(EndPoints.saveNewAuthorURL)
+                .then().spec(respSpecSave())
+                .extract().as(ResponseAuthorSave.class);
     }
 
     public static ResponseBookSave reqSpecSaveBook(String bookTitle, long authorId) {
         BookSaveAuthorExmp author = new BookSaveAuthorExmp(authorId);
         RequestBookSave book = new RequestBookSave(bookTitle, author);
-        ResponseBookSave check =
-                given().spec(reqSpec())
-                        .body(book)
-                        .when()
-                        .post(EndPoints.saveNewBookURL)
-                        .then().spec(respSpecSave())
-                        .extract().as(ResponseBookSave.class);
-        return check;
+
+        return given().spec(reqSpec())
+                .body(book)
+                .when()
+                .post(EndPoints.saveNewBookURL)
+                .then().spec(respSpecSave())
+                .extract().as(ResponseBookSave.class);
     }
 
     public static List<ResponseGetAllBooks> reqSpecGetAllBooks(long id) {
-        List <ResponseGetAllBooks> listOfBooks =
-                given().spec(reqSpec())
-                        .when()
-                        .get(EndPoints.getAllBooksURL, id)
-                        .then().spec(respSpecGet())
-                        .extract().jsonPath().getList(".", ResponseGetAllBooks.class);
-        return listOfBooks;
+        return given().spec(reqSpec())
+                .when()
+                .get(EndPoints.getAllBooksURL, id)
+                .then().spec(respSpecGet())
+                .extract().jsonPath().getList(".", ResponseGetAllBooks.class);
     }
 
-    public static List<ResponseGetAllBooksXML> reqSpecGetAllBooksXML(long id) {
+    public static List <ResponseGetAllBooksXmlList> reqSpecGetAllBooksXML(int id) {
         RequestGetAllBooksXML author = new RequestGetAllBooksXML();
-        List <ResponseGetAllBooksXML> listOfBooks =
-                given().spec(reqSpecXML())
-                        .body(author)
-                        .when()
-                        .post(EndPoints.getAllBooksXMLUrl)
-                        .then().spec(respSpecGet())
-                        .extract().jsonPath().getList(".", ResponseGetAllBooksXML.class);
-        return listOfBooks;
+        author.setAuthorId(id);
+
+        return given().spec(reqSpecXML())
+                .body(author)
+                .when()
+                .post(EndPoints.getAllBooksXMLUrl)
+                .then().spec(respSpecGet())
+                .extract().xmlPath().getList(".", ResponseGetAllBooksXmlList.class);
     }
+
     public static void installSpecification(RequestSpecification req, ResponseSpecification resp) {
         RestAssured.requestSpecification = req;
         RestAssured.responseSpecification = resp;
