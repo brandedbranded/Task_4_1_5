@@ -16,7 +16,16 @@ public class SaveBookTest {
     @Description("Книга сохраняется, статус-код 201, в ответе возвращается id сохранённой книги")
     @Test
     public void saveBookTest(){
-        ResponseBookSave book = Specification.reqSpecSaveBook("BookNewBook", 2);
+        ResponseBookSave book = Specification.reqSpecSaveBook("BookNewBook", 2, 201);
         AssertSaveBook.verifySaveBookResponse(book);
+    }
+
+    @DisplayName("New book save, book title in Russian")
+    @Description("Книга сохраняется, статус-код 201, в ответе возвращается id сохранённой книги")
+    @Test
+    public void saveBookRussianTitle(){
+        ResponseBookSave bookUnknownAuthor = Specification.reqSpecSaveBook("Детство", 1, 201);
+        AssertSaveBook.verifySaveBookResponse(bookUnknownAuthor);
+
     }
 }

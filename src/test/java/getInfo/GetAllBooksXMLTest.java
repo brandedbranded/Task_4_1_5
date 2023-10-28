@@ -17,10 +17,10 @@ public class GetAllBooksXMLTest {
 
 
     @DisplayName("Get all book in XML")
-    @Description("Автор сохраняется, статус-код 201, в ответе возвращается id сохранённого автора")
+    @Description("В ответ приходит список всех книг автора, статус-код 200")
     @Test
     public void getAllBooksXMLTest(){
-        List<ResponseGetAllBooksXmlList> listBooksXML = Specification.reqSpecGetAllBooksXML(2);
+        List<ResponseGetAllBooksXmlList> listBooksXML = Specification.reqSpecGetAllBooksXML(5, 200);
         AssertGetBooksXML.verifyGetAllBooksXMLResponse(listBooksXML);
     }
 }
