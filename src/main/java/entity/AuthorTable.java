@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Date;
 
 @Data
 @EqualsAndHashCode
@@ -27,4 +28,8 @@ public class AuthorTable {
 
     @XmlElement(name = "second_name", required = true)
     private String secondName;
+
+    @XmlElement(name = "birth_date", required = false)
+    private Date birthDate;
+
 }

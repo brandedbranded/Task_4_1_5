@@ -19,7 +19,7 @@ public class SaveAuthorTest {
     @Description("Автор сохраняется, статус-код 201, в ответе возвращается id сохранённого автора")
     @Test
     public void saveAuthorTest() {
-        ResponseAuthorSave author = Specification.reqSpecSaveAuthor(RandomStringUtils.randomAlphabetic(3), RandomStringUtils.randomAlphabetic(3), RandomStringUtils.randomAlphabetic(3), 201);
+        ResponseAuthorSave author = Specification.reqSpecSaveAuthor(RandomStringUtils.randomAlphabetic(3), RandomStringUtils.randomAlphabetic(3), RandomStringUtils.randomAlphabetic(3), 1900, 1, 11, 201);
         AssertSaveAuthor.verifySaveAuthorResponse(author);
     }
 }

@@ -18,6 +18,9 @@ import models.responsesPositive.ResponseAuthorSave;
 import models.responsesPositive.ResponseBookSave;
 import models.responsesPositive.ResponseGetAllBooksXML;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -27,6 +30,7 @@ public class Specification {
                 .setBaseUri("http://localhost")
                 .setContentType(ContentType.JSON)
                 .setPort(8080)
+                .addHeader("Authorization", "Bearer " + token())
                 .addFilter(new RequestLoggingFilter())
                 .addFilter(new ResponseLoggingFilter())
                 .build();
@@ -37,9 +41,22 @@ public class Specification {
                 .setBaseUri("http://localhost")
                 .setContentType(ContentType.XML)
                 .setPort(8080)
+                .addHeader("Authorization", "Bearer " + token())
                 .addFilter(new RequestLoggingFilter())
                 .addFilter(new ResponseLoggingFilter())
                 .build();
+    }
+
+    public static String token() {
+        return given().contentType(ContentType.JSON)
+                .body("{\n" +
+                        "\"login\": \"master_log\",\n" +
+                        "\"password\": \"qweasdzxc\"\n" +
+                        "}")
+                .when()
+                .get("http://localhost:8080/auth/login")
+                .then().log().all()
+                .extract().jsonPath().getString("jwtToken");
     }
 
     public static ResponseSpecification respSpec(int statusCode) {
@@ -53,8 +70,12 @@ public class Specification {
         assertEquals(response.getErrorMessage(), errorMessage, "Неверный errorMessage");
     }
 
-    public static ResponseAuthorSave reqSpecSaveAuthor(String firstName, String lastName, String middleName, int statusCode) {
-        RequestAuthorSave author = new RequestAuthorSave(firstName, lastName, middleName);
+    public static ResponseAuthorSave reqSpecSaveAuthor(String firstName, String lastName, String middleName, int year, int month, int day, int statusCode) {
+        LocalDate date1 = LocalDate.of(year,month,day);
+        DateTimeFormatter formatters = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String date = date1.format(formatters);
+
+        RequestAuthorSave author = new RequestAuthorSave(firstName, lastName, middleName, date);
 
         return given().spec(reqSpec())
                 .body(author)

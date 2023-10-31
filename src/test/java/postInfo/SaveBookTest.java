@@ -5,11 +5,12 @@ import io.qameta.allure.Story;
 import io.restassured.response.ValidatableResponse;
 import jdk.jfr.Description;
 import models.responsesPositive.ResponseAuthorSave;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import steps.Specification;
 import steps.assertForTest.AssertBooks;
+
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 
 @Epic("PostTests")
 @Story("saveNewBook")
@@ -18,7 +19,7 @@ public class SaveBookTest {
     @Description("Книга сохраняется, статус-код 201, в ответе возвращается id сохранённой книги")
     @Test
     public void saveBookTest(){
-        ResponseAuthorSave author = Specification.reqSpecSaveAuthor(RandomStringUtils.randomAlphabetic(3), RandomStringUtils.randomAlphabetic(3), RandomStringUtils.randomAlphabetic(3), 201);
+        ResponseAuthorSave author = Specification.reqSpecSaveAuthor(randomAlphabetic(3), randomAlphabetic(3), randomAlphabetic(3), 1900, 2, 11,201);
         long id = author.getAuthorId();
 
         String bookTitle = "BookNewBook";
@@ -32,7 +33,7 @@ public class SaveBookTest {
     @Description("Книга сохраняется, статус-код 201, в ответе возвращается id сохранённой книги")
     @Test
     public void saveBookRussianTitle(){
-        ResponseAuthorSave author = Specification.reqSpecSaveAuthor(RandomStringUtils.randomAlphabetic(3), RandomStringUtils.randomAlphabetic(3), RandomStringUtils.randomAlphabetic(3), 201);
+        ResponseAuthorSave author = Specification.reqSpecSaveAuthor(randomAlphabetic(3), randomAlphabetic(3), randomAlphabetic(3), 1900, 2, 11, 201);
         long id = author.getAuthorId();
 
         String bookTitle = "Детство";
@@ -40,6 +41,5 @@ public class SaveBookTest {
 
         ValidatableResponse allBooks = Specification.reqSpecGetAllBooksResponse(String.valueOf(id), 200);
         AssertBooks.verifyBodyGetBooks(allBooks, id, bookTitle);
-
     }
 }

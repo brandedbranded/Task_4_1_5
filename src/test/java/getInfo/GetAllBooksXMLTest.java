@@ -21,7 +21,7 @@ public class GetAllBooksXMLTest {
     @Description("В ответ приходит список всех книг автора, статус-код 200")
     @Test
     public void getAllBooksXMLTest(){
-        ResponseAuthorSave author1 = Specification.reqSpecSaveAuthor(RandomStringUtils.randomAlphabetic(3), RandomStringUtils.randomAlphabetic(3), RandomStringUtils.randomAlphabetic(3), 201);
+        ResponseAuthorSave author1 = Specification.reqSpecSaveAuthor(RandomStringUtils.randomAlphabetic(3), RandomStringUtils.randomAlphabetic(3), RandomStringUtils.randomAlphabetic(3), 1900, 2, 11, 201);
         long id = author1.getAuthorId();
 
         String bookTitle = "BookNewBook";
