@@ -1,6 +1,7 @@
 package steps;
 
 
+import config.Token;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.filter.log.RequestLoggingFilter;
@@ -17,12 +18,9 @@ import models.responseNegative.ResponseNegative;
 import models.responsesPositive.ResponseAuthorSave;
 import models.responsesPositive.ResponseBookSave;
 import models.responsesPositive.ResponseGetAllBooksXML;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import utils.DateFormatter;
 
 import static io.restassured.RestAssured.given;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class Specification {
     public static RequestSpecification reqSpec() {
@@ -30,7 +28,7 @@ public class Specification {
                 .setBaseUri("http://localhost")
                 .setContentType(ContentType.JSON)
                 .setPort(8080)
-                .addHeader("Authorization", "Bearer " + token())
+                .addHeader("Authorization", "Bearer " + getAuthToken())
                 .addFilter(new RequestLoggingFilter())
                 .addFilter(new ResponseLoggingFilter())
                 .build();
@@ -41,18 +39,16 @@ public class Specification {
                 .setBaseUri("http://localhost")
                 .setContentType(ContentType.XML)
                 .setPort(8080)
-                .addHeader("Authorization", "Bearer " + token())
+                .addHeader("Authorization", "Bearer " + getAuthToken())
                 .addFilter(new RequestLoggingFilter())
                 .addFilter(new ResponseLoggingFilter())
                 .build();
     }
 
-    public static String token() {
+    public static String getAuthToken() {
+        Token token = new Token("master_log","qweasdzxc");
         return given().contentType(ContentType.JSON)
-                .body("{\n" +
-                        "\"login\": \"master_log\",\n" +
-                        "\"password\": \"qweasdzxc\"\n" +
-                        "}")
+                .body(token)
                 .when()
                 .get("http://localhost:8080/auth/login")
                 .then().log().all()
@@ -65,15 +61,8 @@ public class Specification {
                 .build();
     }
 
-    public static void respSpecNegative(ResponseNegative response, String errorCode, String errorMessage) {
-        assertEquals(response.getErrorCode(), errorCode, "Неверный errorCode");
-        assertEquals(response.getErrorMessage(), errorMessage, "Неверный errorMessage");
-    }
-
     public static ResponseAuthorSave reqSpecSaveAuthor(String firstName, String lastName, String middleName, int year, int month, int day, int statusCode) {
-        LocalDate date1 = LocalDate.of(year,month,day);
-        DateTimeFormatter formatters = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        String date = date1.format(formatters);
+        String date = DateFormatter.formatDate(year,month,day);
 
         RequestAuthorSave author = new RequestAuthorSave(firstName, lastName, middleName, date);
 

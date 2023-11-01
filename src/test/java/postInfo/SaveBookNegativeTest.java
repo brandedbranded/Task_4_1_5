@@ -10,6 +10,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import steps.Specification;
+import steps.assertForTest.AssertNegativeResponse;
 
 @Epic("PostTests")
 @Story("saveNewBook-negative")
@@ -20,7 +21,7 @@ public class SaveBookNegativeTest {
     @Test
     public void saveBookUnknownAuthorTest() {
         ResponseNegative response = Specification.reqSpecSaveBookNegative("BookUnknown", 222, 409);
-        Specification.respSpecNegative(response, "1004", "Указанный автор не существует в таблице");
+        AssertNegativeResponse.verifyNegativeResponse(response, "1004", "Указанный автор не существует в таблице");
     }
 
     @DisplayName("Сохранение новой книги с отрицательным id")
@@ -29,7 +30,7 @@ public class SaveBookNegativeTest {
     @ValueSource(longs = {-1, -2,})
     public void saveBookNegativeId(long id) {
         ResponseNegative response = Specification.reqSpecSaveBookNegative("Title", id, 409);
-        Specification.respSpecNegative(response, "1004", "Указанный автор не существует в таблице");
+        AssertNegativeResponse.verifyNegativeResponse(response, "1004", "Указанный автор не существует в таблице");
 
     }
 
@@ -39,7 +40,7 @@ public class SaveBookNegativeTest {
     @NullSource
     public void saveBookNullTitle(String bookTitle) {
         ResponseNegative response = Specification.reqSpecSaveBookNegative(bookTitle, 4, 400);
-        Specification.respSpecNegative(response, "Валидация не пройдена", "Не передан обязательный параметр: bookTitle");
+        AssertNegativeResponse.verifyNegativeResponse(response, "Валидация не пройдена", "Не передан обязательный параметр: bookTitle");
 
     }
 }
