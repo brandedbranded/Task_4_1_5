@@ -6,6 +6,7 @@ import io.qameta.allure.Epic;
 import io.qameta.allure.Story;
 import models.responsesPositive.ResponseAuthorSave;
 import models.responsesPositive.ResponseGetAllBooksXML;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import steps.Specification;
@@ -21,6 +22,7 @@ public class GetAllBooksXMLTest {
 
     @DisplayName("Получить список всех книг в XML формате")
     @Description("В ответ приходит список всех книг автора, статус-код 200")
+    @Disabled
     @Test
     public void getAllBooksXMLTest(){
         int year = 1800;

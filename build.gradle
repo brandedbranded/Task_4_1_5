@@ -26,6 +26,10 @@ dependencies {
     implementation 'org.glassfish.jaxb:jaxb-runtime:2.3.1'
     implementation platform('org.junit:junit-bom:5.9.1')
     implementation 'org.junit.jupiter:junit-jupiter'
+    implementation 'javax.validation:validation-api:2.0.1.Final'
+    implementation 'org.postgresql:postgresql:42.6.0'
+    implementation 'org.hibernate.orm:hibernate-core:6.3.1.Final'
+
 }
 
 test {

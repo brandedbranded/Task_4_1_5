@@ -1,7 +1,7 @@
 package steps;
 
 
-import config.Token;
+import models.requests.RequestToken;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.filter.log.RequestLoggingFilter;
@@ -46,7 +46,7 @@ public class Specification {
     }
 
     public static String getAuthToken() {
-        Token token = new Token("master_log","qweasdzxc");
+        RequestToken token = new RequestToken("master_log","qweasdzxc");
         return given().contentType(ContentType.JSON)
                 .body(token)
                 .when()
