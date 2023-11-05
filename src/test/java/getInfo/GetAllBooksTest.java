@@ -25,16 +25,19 @@ public class GetAllBooksTest {
         int year = 1800;
         int month = 3;
         int day = 4;
-        ResponseAuthorSave author = Specification.reqSpecSaveAuthor(randomAlphabetic(3), randomAlphabetic(3), randomAlphabetic(3), year, month, day, 201);
+        String first_name = "Fedor";
+        ResponseAuthorSave author = Specification.reqSpecSaveAuthor(first_name, randomAlphabetic(3), randomAlphabetic(3), year, month, day, 201);
         long id = author.getAuthorId();
-        String birthDate = DateFormatter.formatDate(year,month,day);
+        String birthDate = DateFormatter.formatDate(year, month, day);
 
         String bookTitle = "BookNewBook";
         Specification.reqSpecSaveBook("BookNewBook", id, 201);
 
         ValidatableResponse allBooks = Specification.reqSpecGetAllBooksResponse(String.valueOf(id), 200);
+        AssertBooks.validateBookTitlesAndAuthor(id, bookTitle, first_name);
         AssertBooks.verifyBodyGetBooks(allBooks, id, bookTitle);
         AssertSaveAuthor.verifyBirthDate(allBooks, id, birthDate);
-
+        // Решил оставить прошлые проверки на будущее, чтобы в архиве остались все мои рабочие способы.
+        // Поэтому просто добавил новый метод с необходимыми проверками.
     }
 }

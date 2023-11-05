@@ -35,6 +35,16 @@ public class BookRepository {
         return query.getResultList();
     }
 
+    public List<BookTable> findBookByAuthorId(long id) {
+        final String hql = """
+                SELECT * FROM book where author_id = :id
+                """;
+
+        NativeQuery<BookTable> query = session.createNativeQuery(hql, BookTable.class);
+        query.setParameter("id", id);
+        return query.getResultList();
+    }
+
     public void deleteAll() {
         final String hql = "DELETE FROM book" ;
 

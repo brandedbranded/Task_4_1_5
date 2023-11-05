@@ -9,12 +9,13 @@ import java.util.List;
 import static steps.assertForTest.AssertForSQL.sizeVerification;
 
 public class BookTest {
+
     @Test
     public void insertNewBookTest() {
         BookRepository bookRepository = new BookRepository();
         long authorId = 2;
-        String bookSanctuary = "Sanctuary" ;
-        String bookCemetery = "Cemetery" ;
+        String bookSanctuary = "Sanctuary";
+        String bookCemetery = "Cemetery";
 
         bookRepository.deleteAll();
 
@@ -30,7 +31,7 @@ public class BookTest {
         System.out.println("Найденная книга по названию " + bookSanctuary + " : " + sanctuaryBook);
 
         bookRepository.deleteBookByTitle(bookSanctuary);
-        List<BookTable> cemeteryBook = bookRepository.findBookByTitle(bookCemetery);
+        List<BookTable> cemeteryBook = bookRepository.findAll();
         sizeVerification(1, cemeteryBook);
         System.out.println("Найденная книга по названию " + bookCemetery + " после удаления другой книги: " + cemeteryBook);
     }

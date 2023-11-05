@@ -10,6 +10,7 @@ import static config.LibraryDatabaseConfiguration.getSession;
 
 public class AuthorRepository {
     Session session;
+
     public AuthorRepository(){
         session = getSession();
     }
